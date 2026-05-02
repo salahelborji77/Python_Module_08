@@ -5,8 +5,7 @@ description = "small project for practice pip and poetry"
 authors = [
     {name = "selborji"}
 ]
-readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "pandas>=2.0",
     "requests>=2.31",

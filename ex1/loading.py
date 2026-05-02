@@ -1,7 +1,9 @@
 import importlib
+import sys
+from typing import Any
 
 
-def check_dep():
+def check_dep() -> tuple[dict[str, dict[str, str | Any | str]], list[str]]:
     deps = [
         {"name": "pandas", "info": "Data manipulation ready"},
         {"name": "numpy", "info": "Numerical computation ready"},
@@ -29,7 +31,7 @@ def check_dep():
     return installed, errors
 
 
-def analyze_matrix(packages):
+def analyze_matrix(packages) -> None:
     np = packages["numpy"]["module"]
     pd = packages["pandas"]["module"]
     plt = packages["matplotlib.pyplot"]["module"]
@@ -45,14 +47,15 @@ def analyze_matrix(packages):
     stats.plot(kind="bar")
     plt.title("Average Values per Column")
     plt.xlabel("Column")
-    plt.ylabel("Mean Value")
+    plt.ylabel("Mean Values")
 
     filename = "matrix_analysis.png"
     plt.savefig(filename)
     plt.close()
 
-    print("Analysis complete!", 0.5)
+    print("Analysis complete!")
     print(f"Results saved to: {filename}")
+
 
 def main() -> None:
     installed, errors = check_dep()
@@ -66,12 +69,12 @@ def main() -> None:
 
     for name, data in installed.items():
         print(f"[OK] {name} ({data['version']}) - {data['info']}")
-    
+
     analyze_matrix(installed)
     if "poetry" in sys.executable.lower():
-        print("running inside poetry environment")
+        print("running with poetry in environment")
     else:
-        print("runinnig inside pip environment")
+        print("runinnig with pip in environment")
 
 
 if __name__ == "__main__":

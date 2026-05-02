@@ -1,8 +1,8 @@
+from dotenv import load_dotenv
 import os
 
 
-def load_config() -> None:
-    from dotenv import load_dotenv
+def load_config() -> dict:
     load_dotenv()
     config = {
         "MATRIX_MODE": os.getenv("MATRIX_MODE"),
@@ -20,7 +20,8 @@ def validate_config(config: dict) -> None:
     if missing:
         print("WARNING: Missing configuration values:")
         for key in missing:
-            print(f"- {key}")
+            print(f"- {key} missing")
+
 
 def display_config(config: dict) -> None:
     print("ORACLE STATUS: Reading the Matrix...\n")
@@ -31,7 +32,7 @@ def display_config(config: dict) -> None:
     print(f"Mode: {mode}")
 
     if config["DATABASE_URL"]:
-        print("Database: Connected")
+        print("Database: Connected to local instance")
     else:
         print("Database: Not configured")
 
@@ -51,9 +52,14 @@ def display_config(config: dict) -> None:
 def security_check(config: dict) -> None:
     print("\nEnvironment security check:")
     print("[OK] No hardcoded secrets detected")
-    print("[OK] .env file properly configured")
-    print("[OK] Production overrides available")
-    print("\nThe Oracle sees all configurations.")
+    if all(config.values()):
+        print("[OK] .env file properly configured")
+        print("[OK] Production overrides available")
+        print("\nThe Oracle sees all configurations.")
+    else:
+        print("[WARNING] .env file not configured")
+        print("[WARNING] Production overrides not available")
+        print("\n[WARNING] Some variables are missing")
 
 
 def main():
